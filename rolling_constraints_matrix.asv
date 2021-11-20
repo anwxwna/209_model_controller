@@ -1,0 +1,5 @@
+function f = rolling_constraints_matrix(parameters)
+% alpha,beta,l,d
+alpha = parameters(1,1);
+beta = parameters(1,1);
+l = parameters(1,1);
