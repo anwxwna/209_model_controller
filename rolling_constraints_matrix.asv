@@ -1,5 +1,23 @@
-function f = rolling_constraints_matrix(parameters)
+function roll_const = rolling_constraints_matrix(parameters)
 % alpha,beta,l,d
 alpha = parameters(1,1);
-beta = parameters(1,1);
-l = parameters(1,1);
+beta = parameters(1,2);
+l = parameters(1,3);
+d= parameters(1,4);
+
+% rolling constraints
+roll_const = 
+
+roll_const=[];
+
+for i=1:size(parameters,1)
+    alpha   = parameters(i,1);
+    beta    = parameters(i,2);
+    l       = parameters(i,3);
+    row_vector = [ -sin(alpha +beta) cos(alpha+beta) l*cos(beta)];
+    roll_const = [ noslip; {row_vector} ];
+end
+end
+
+
+end
