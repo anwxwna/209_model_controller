@@ -8,6 +8,6 @@ for i=1:size(parameters,1)
     beta    = parameters(i,2);
     l       = parameters(i,3);
     row_vector = [-cos(alpha+beta) sin(alpha +beta) l*sin(beta)] ;
-    no_slip = [ noslip; {row_vector} ];
+    no_slip = [ no_slip; {row_vector} ];
 end
 end
