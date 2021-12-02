@@ -10,14 +10,11 @@ function posture_kine = kinematics_generate(WMR)
 % wheels_x : alpha,beta, l , d  WHEEL DATA in array. One row per wheel 
 
 % Rotation matrix for the robot body 
-theta = WMR.theta;
 wheels_f = WMR.wheels_f;
 wheels_s = WMR.wheels_s;
 % trans_input = WMR.trans_input;
 
-R_theta = [cos(theta) sin(theta) 0;
-           -sin(theta) cos(theta) 0;
-           0           0         1  ];  
+R_theta = WMR.tform_robot;
 
 % Rolling constraints
 roll_f = rolling_constraints_matrix(wheels_f);  % N_f x 3
