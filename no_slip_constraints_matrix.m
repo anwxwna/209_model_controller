@@ -7,7 +7,7 @@ for i=1:size(parameters,1)
     alpha   = parameters(i,1);
     beta    = parameters(i,2);
     l       = parameters(i,3);
-    row_vector = [-cos(alpha+beta) sin(alpha +beta) l*sin(beta)] ;
-    no_slip = [ no_slip; {row_vector} ];
+    row_vector = [-cos(alpha+beta), sin(alpha +beta), 1, l*sin(beta)] ;
+    no_slip = [ no_slip; row_vector];
 end
 end

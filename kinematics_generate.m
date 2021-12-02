@@ -21,7 +21,7 @@ roll_f = rolling_constraints_matrix(wheels_f);  % N_f x 3
 roll_s = rolling_constraints_matrix(wheels_s);  % N_s x 3
 roll= [roll_f; roll_s];
 
-roll_c = roll*R_theta.';
+% roll_c = roll*R_theta.';
 % No-slip constraints
 no_slip_f = no_slip_constraints_matrix(wheels_f);
 no_slip_s = no_slip_constraints_matrix(wheels_s);
@@ -31,7 +31,8 @@ no_slip = [no_slip_f;no_slip_s];
 
 % this will be multiplied with the the velocity and steering inputs to get
 % the 
-posture_kine = null(no_slip)*R_theta.';   
+posture_kine = R_theta.'*null(no_slip);   
+% posture_kine = no_slip;
                         
 
 

@@ -1,4 +1,4 @@
-function WMRK = WMRK_unicycle
+function WMR = WMRK_unicycle
 %% ======================Wheeled Mobile Robot Kinematics========================
 % November 2021
 %
@@ -64,7 +64,7 @@ WMR.actuator_tforms = [orientation_w1; orientation_w2];
 % Calling the Classify Component Function 
 
 [wheels_f,wheels_s ,wmr_possible] = classify_components(WMR);
-WMR.wheels_f =wheels_f;
+WMR.wheels_f = wheels_f;
 WMR.wheels_s = wheels_s;
 
 
