@@ -88,10 +88,9 @@ end
 % actuator wrt ROBOT FRAME
 actsEUL = [];
 act_centers=[];
-for i=actuator_num
+for i=1:actuator_num
      actsEUL = [actsEUL ; tform2eul(actuator_tforms(4*(i-1)+1:4*(i-1)+1+3,1:4))];
      act_center = actuator_tforms(4*(i-1)+1:4*(i-1)+1+3,1:4)*[0;0;0;1];
-     act_center = tform*[0;0;0;1];
      act_centers = [act_centers;act_center.'];
 end
 %% AXLE-WISE GROUPINGS iterations =========================================
@@ -106,17 +105,24 @@ for i=keys(same_axle_map)
     axle_vectors = [axle_vectors;axle_vec];  % same axle wheels
 
 %   Relative position of actuators wrt all the axles
-    for k=actuator_num
+    for k=1:actuator_num
 %   Going through each actuator in loop 
-         act_center = actuator_tforms(4*(k-1)+1:4*(k-1)+1+3,1:4) *robot_z_axis;
-         angle = acos(min(1,max(-1, act_center(:).' * axle_vec(:) / norm(act_center) / norm(axle_vec) )));
+         act_vector_z = actuator_tforms(4*(k-1)+1:4*(k-1)+1+3,1:4) *robot_z_axis;
+         angle = acos(min(1,max(-1, act_vector_z(:).' * axle_vec(:) / norm(act_vector_z) / norm(axle_vec) )));
+       
          % Actuator parallel to wheel axles---------
-%          Adding the ACTIVE wheels to the active set (fixed wheels)
-         if angle == 0
-            if act_centers(k) == wheel_centers(w1,1:4)
+%        Adding the ACTIVE wheels to the active set (fixed wheels)
+         if (angle == 0) || (angle == pi) 
+             
+            if isequal( act_centers(k,1:4), wheel_centers(w1,1:4) ) && isequal(act_centers(k,1:4), wheel_centers(w2,1:4))
+                active = [active, w1,w2];
+            elseif act_centers(k,1:4) == wheel_centers(w1,1:4)
                 active = [active, w1];
-            elseif act_centers(k) == wheel_centers(w2,1:4)
+                passive_but_same_axle_as_active = w2;
+            elseif act_centers(k,1:4) == wheel_centers(w2,1:4)
                 active = [active, w2];
+                passive_but_same_axle_as_active = w1;
+            
             end
 %  Check if actuated wheels share same axes
 %  If steered wheels on same axes as fixed wheels, consider as fixed
@@ -131,14 +137,16 @@ for i=keys(same_axle_map)
          act_axle_angles = [act_axle_angles;angle];
     end
 end
+steering = unique(steering);
 % Only passive wheel axles are considered steering wheels
-for i=1:length(steering)
+for i=1:length(steering)-1
     if ismember(steering(i), active)
         steering(i) = [];
     end
-
-
-
+    
+end
+if ismember( passive_but_same_axle_as_active,steering)
+   steering(steering == passive_but_same_axle_as_active) = [];
 end
 %% [CHECK FOR SINGULARITIES]=============================
 icrs = [];
@@ -244,9 +252,9 @@ end
 %% Classification==========================================================
 % After counting all the actuated wheels of differnt types 
 % if the number of fixed wheels is == 0
-if length(active) ==0
+if isempty(active) ==0
 %     If number of c-steerable wheels is 0
-    if length(steering) ==0
+    if isempty(steering)
         wmr_type = '(3,0)';
     %     If number of c-steerable wheels is 1
     elseif length(steering) == 1
@@ -265,7 +273,7 @@ end
 %     If number of c-steerable wheels is 0
 %     If number of c-steerable wheels is >=1
 if length(active) >=1
-    if length(steering) ==0
+    if isempty(steering)
         wmr_type = '(2,0)';
     elseif length(steering) >=1
             wmr_type = '(1,1)';
@@ -276,6 +284,6 @@ end
 for i=fixed
     wheels_f = [wheels_f; wheels_alphas(i),wheels_betas(i),norm(wheel_centers(i))];
 end
-wmr_possible = 1;
+% wmr_possible = 1;
         
         
