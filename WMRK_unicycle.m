@@ -63,25 +63,7 @@ WMR.actuator_tforms = [orientation_w1; orientation_w2];
 % Configuration wrt the robot body COMPUTE THIS
 % Calling the Classify Component Function 
 
-[wheels_f,wheels_s ,wmr_possible] = classify_components(WMR);
+[wheels_f,wheels_s ,wmr_possible,wmr_type] = classify_components(WMR);
 WMR.wheels_f = wheels_f;
 WMR.wheels_s = wheels_s;
 
-
-
-
-%% ========================Mathematical Modeling===========================
-
-
-%% =====================Create Symbolic Definitions========================
-% WMR.symbs = struct();
-% syms th1 th2 th3 th4 th5
-% WMR.symbs.thiSym = sym(zeros(WMR.DOF,1));
-% WMR.symbs.alphasSym = sym(zeros(WMR.DOF,1));
-% WMR.symbs.thetasSym = sym([th1; th2; th3; th4; th5]);
-% for i = 1:WMR.DOF
-%     WMR.symbs.alphasSym(i) = WMR.DH.alphas(i);
-%     WMR.symbs.thiSym(i) = WMR.th.thi(i);
-% end
-
-%% ===============Transform each point in the global frame=================

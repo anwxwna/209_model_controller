@@ -13,7 +13,7 @@ active = [];
 robot_x_axis = [1;0;0;0];
 robot_z_axis = [0;0;1;0];
 robot_y_axis = [0;1;0;0];
-
+wmr_possible =0;
 % if else ladder approach to generate model
 % Check orientation of wheels add to an array 
 % Add euler angles of the wheels from the tform matrices into an array
